@@ -44,6 +44,9 @@
 <?php include_once (__ROOT__.'/includes/hints/hints-menu-wrapper.inc'); ?>
 
 <?php
+	use Nullix\CryptoJsAes\CryptoJsAes;
+	require __DIR__ . "/includes/CryptoJsAes.php";
+
 	if ($lFormSubmitted){
 		
 		try {					
@@ -62,6 +65,13 @@
 				$lUserSignature = $_REQUEST["my_signature"];
 				$lPostedCSRFToken = $_REQUEST['csrf-token'];
 	   		}//end if
+
+			$password = 'theKey';
+
+			$lUsername = CryptoJsAes::decrypt($lUsername, $password);
+			$lPassword = CryptoJsAes::decrypt($lPassword, $password);
+			$lConfirmedPassword = CryptoJsAes::decrypt($lConfirmedPassword, $password);
+			$lUserSignature = CryptoJsAes::decrypt($lUserSignature, $password);
 	   		
 	   		if ($lEncodeOutput){
 	   			$lUsernameText = $Encoder->encodeForHTML($lUsername);
@@ -100,6 +110,9 @@
 	}// end if $lFormSubmitted
 ?>
 
+<script type="text/javascript" src="javascript/cryptojsaes/cryptojs-aes.min.js"></script>
+<script type="text/javascript" src="javascript/cryptojsaes/cryptojs-aes-format.js"></script>
+
 <script type="text/javascript">
 <!--
 	<?php 
@@ -126,6 +139,11 @@
 						return false;
 				};// end if
 			};// end if(lValidateInput)
+
+			theForm.username.value = CryptoJSAesJson.encrypt(theForm.username.value, "theKey");
+			theForm.password.value = CryptoJSAesJson.encrypt(theForm.password.value, "theKey");
+			theForm.confirm_password.value = CryptoJSAesJson.encrypt(theForm.confirm_password.value, "theKey");
+			theForm.my_signature.value = CryptoJSAesJson.encrypt(theForm.my_signature.value, "theKey");
 			
 			return true;
 		}catch(e){
