@@ -22,7 +22,19 @@
     	
 	} catch(Exception $e){
 		echo $CustomErrorHandler->FormatError($e, "Error setting up configuration.");
-	}// end try	
+	}// end try
+
+	if ($_POST["vercode"]=='' OR $_POST["vercode"] != $_SESSION["vercode"]) {
+		if ($_SESSION["loggedin"]=="True"){
+			$_SESSION['loggedin'] = 'False';
+			$_SESSION['logged_in_user'] = '';
+			$_SESSION['logged_in_usersignature'] = '';
+		}
+        echo "<script>alert('Incorrect verification code');</script>" ;
+    } 
+	else {
+		echo "<script>alert('Verification code match !');</script>" ;
+	}
 ?>
 
 <script type="text/javascript">
@@ -49,6 +61,7 @@
 
 	function onSubmitOfLoginForm(/*HTMLFormElement*/ theForm){
 		try{
+
 			if(lValidateInput == "TRUE"){
 				var lUnsafeCharacters = /[`~!@#$%^&*()-_=+\[\]{}\\|;':",./<>?]/;
 				if (theForm.username.value.length > 15 || 
@@ -115,6 +128,19 @@
 						}// end if
 					?>
 					/>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Verification Code</td>
+				<td>
+					<input type="text" name="vercode" size="20" required="required"
+					<?php
+						if ($lEnableHTMLControls) {
+							echo('minlength="1" maxlength="15" required="required"');
+						}// end if
+					?>
+					/>
+					<img src="captcha.php" >
 				</td>
 			</tr>
 			<tr><td></td></tr>
