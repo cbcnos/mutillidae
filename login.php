@@ -62,7 +62,7 @@
 	function onSubmitOfLoginForm(/*HTMLFormElement*/ theForm){
 		try{
 
-			if(lValidateInput == "TRUE"){
+			//if(lValidateInput == "TRUE"){
 				var lUnsafeCharacters = /[`~!@#$%^&*()-_=+\[\]{}\\|;':",./<>?]/;
 				if (theForm.username.value.length > 15 || 
 					theForm.password.value.length > 15){
@@ -75,7 +75,7 @@
 						alert('Dangerous characters detected. We can\'t allow these. This all powerful blacklist will stop such attempts.\n\nMuch like padlocks, filtering cannot be defeated.\n\nBlacklisting is l33t like l33tspeak.');
 						return false;
 				};// end if
-			};// end if(lValidateInput)
+			//};// end if(lValidateInput)
 			
 			return true;
 		}catch(e){
